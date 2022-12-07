@@ -32,11 +32,11 @@
                     <li class="nav-item" role="presentation"
                         *ngFor="let view of getDataFromLocalStorage;let i = index;">
                         <div class="btn-group">
-                            <button class="nav-link ms-3" id="pills-{{view.id}}-tab" data-bs-toggle="pill"
+                            <button class="nav-link ms-3 " id="pills-{{view.id}}-tab" data-bs-toggle="pill"
                                 [attr.data-bs-target]="'#pills-'+ view.id" type="button" role="tab"
                                 [attr.aria-controls]="'pills' + view.id" aria-selected="true"
                                 (click)="viewClicked(view)">
-                                <span [ngClass]="{'activeTab': clickedTabId == view.id}">{{view.tabView}}</span>
+                                <span [ngClass]="{'activeTab': clickedTabId == view.id}">{{view.name}}</span>
                             </button>
                             <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
                                 id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false"
@@ -58,7 +58,7 @@
 
 
             <div class="tab-content" id="pills-tabContent" *ngFor="let view of getDataFromLocalStorage;let i = index;">
-                <div class="tab-pane fade show" id="pills-{{view.id}}" role="tabpanel"
+                <div class="tab-pane fade show active" id="pills-{{view.id}}" role="tabpanel"
                     [attr.aria-labelledby]="'pills' + view.id + '-tab'">
                     <div *ngIf="clickedTabId == view.id">
                         <div class="card">

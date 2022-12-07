@@ -59,11 +59,31 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getDataFromLocalStorage = this.getLocalStorageData();
     console.log("this.getDataFromLocalStorage", this.getDataFromLocalStorage);
+
+    if (this.getDataFromLocalStorage.length > 0) {
+
+      this.clickedTabId = this.getDataFromLocalStorage[0].id;
+
+      setTimeout(() => {
+        this.getDataFromLocalStorage.filter((res: any) => {
+
+          res.layout.filter((res: any) => {
+            if (res.url.changingThisBreaksApplicationSecurity == undefined) {
+              const url = res.url;
+              res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            }
+          });
+
+        });
+      }, 500);
+    }
+
   }
 
 
@@ -235,6 +255,7 @@ export class DashboardComponent implements OnInit {
       makeObject.layoutType = '1';
       makeObject.layoutName = 'Layout 1';
       makeObject.id = s4();
+      makeObject.name = this.layoutTitle;
       makeObject.layout = this.droppedModule;
 
       this.getDataFromLocalStorage.push(makeObject);
@@ -261,6 +282,7 @@ export class DashboardComponent implements OnInit {
       makeObject.layoutType = '2';
       makeObject.layoutName = 'Layout 2';
       makeObject.id = s4();
+      makeObject.name = this.layoutTitle;
       makeObject.layout = this.droppedModule;
 
       this.getDataFromLocalStorage.push(makeObject);
@@ -283,6 +305,7 @@ export class DashboardComponent implements OnInit {
       makeObject.layoutType = '3';
       makeObject.layoutName = 'Layout 3';
       makeObject.id = s4();
+      makeObject.name = this.layoutTitle;
       makeObject.layout = this.droppedModule;
 
       this.getDataFromLocalStorage.push(makeObject);
@@ -305,6 +328,7 @@ export class DashboardComponent implements OnInit {
       makeObject.layoutType = '4';
       makeObject.layoutName = 'Layout 4';
       makeObject.id = s4();
+      makeObject.name = this.layoutTitle;
       makeObject.layout = this.droppedModule;
 
       this.getDataFromLocalStorage.push(makeObject);
@@ -320,6 +344,22 @@ export class DashboardComponent implements OnInit {
       this.getDataFromLocalStorage = this.getLocalStorageData();
     }
 
+    setTimeout(() => {
+      this.getDataFromLocalStorage.filter((res: any) => {
+
+        res.layout.filter((res: any) => {
+          if (res.url.changingThisBreaksApplicationSecurity == undefined) {
+            const url = res.url;
+            res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+          }
+        });
+
+      });
+    }, 500);
+
+    this.clickedTabId = this.getDataFromLocalStorage[0].id;
+
+    console.log("this.clickedTabId", this.clickedTabId);
   }
 
   /** Get local storage data */
@@ -381,14 +421,14 @@ export class DashboardComponent implements OnInit {
     this.selectedLayout = null;
     this.layoutTitle = null;
     this.buttonDisabled = true;
-    this.clickedTabId = null;
+    // this.clickedTabId = null;
   }
 
   /** Search view */
   searchView() {
     this.getDataFromLocalStorage = this.getDataFromLocalStorage.filter((fl: any, index: number) => {
       console.log(fl)
-      if (fl.tabView.toUpperCase() == this.searchKeyword.toUpperCase()) {
+      if (fl.name.toUpperCase() == this.searchKeyword.toUpperCase()) {
         return fl;
       }
     });

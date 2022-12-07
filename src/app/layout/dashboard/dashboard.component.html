@@ -1,0 +1,335 @@
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            Dashboard
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" (ngModelChange)="modelChangeFnSearch($event)"
+                    [(ngModel)]="searchKeyword" name="searchKeyword" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit" (click)="searchView()">Search</button>
+            </form>
+        </ul>
+
+    </div>
+</nav>
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 text-end">
+                <button type="button" class="btn btn-primary" [disabled]="getDataFromLocalStorage.length == 10"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="createnew()">
+                    Create a new layout
+                </button>
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation"
+                        *ngFor="let view of getDataFromLocalStorage;let i = index;">
+                        <div class="btn-group">
+                            <button class="nav-link ms-3" id="pills-{{view.id}}-tab" data-bs-toggle="pill"
+                                [attr.data-bs-target]="'#pills-'+ view.id" type="button" role="tab"
+                                [attr.aria-controls]="'pills' + view.id" aria-selected="true"
+                                (click)="viewClicked(view)">
+                                <span [ngClass]="{'activeTab': clickedTabId == view.id}">{{view.tabView}}</span>
+                            </button>
+                            <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split"
+                                id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false"
+                                data-bs-reference="parent">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+                                <li (click)="delete(view)">
+                                    <a class="dropdown-item">
+                                        Delete
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="tab-content" id="pills-tabContent" *ngFor="let view of getDataFromLocalStorage;let i = index;">
+                <div class="tab-pane fade show" id="pills-{{view.id}}" role="tabpanel"
+                    [attr.aria-labelledby]="'pills' + view.id + '-tab'">
+                    <div *ngIf="clickedTabId == view.id">
+                        <div class="card">
+                            <div class="card-header">
+                                {{view.layoutName}}
+                            </div>
+                            <div class="row">
+                                <ng-container *ngIf="view.layoutName == 'Layout 1' || view.layoutName == 'Layout 2'">
+                                    <div class="col-md-12" *ngFor="let content of view.layout">
+                                        <div class="card-body overflow-hidden"
+                                            [ngClass]="{'bodylayout1':view.layoutName == 'Layout 1','bodylayout2':view.layoutName == 'Layout 2'}">
+                                            <h5 class="card-title">
+                                                {{content.name}}
+                                                <iframe id=" frame" [src]="content.url" width="100%" height="600">
+                                                </iframe>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="view.layoutName == 'Layout 4'">
+                                    <div class="col-md-6" *ngFor="let content of view.layout">
+                                        <div class="card-body overflow-hidden">
+                                            <h5 class="card-title">
+                                                {{content.name}}
+                                                <iframe id=" frame" [src]="content.url" width="100%" height="400">
+                                                </iframe>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="view.layoutName == 'Layout 3'">
+                                    <div *ngFor="let content of view.layout;let i = index"
+                                        [ngClass]="{'col-md-4':i == 0,'col-md-8':i == 1}">
+                                        <div class="card-body"
+                                            [ngClass]="{'dashboardLayout0':i == 0,'dashboardLayout1':i == 1,'dashboardLayout2':i == 2}">
+                                            <h5 class="card-title">
+                                                {{content.name}}
+                                                <iframe id=" frame" [src]="content.url" width="100%" height="400">
+                                                </iframe>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<!-- <iframe id=" frame" src="https://www.instagram.com/" width="100%" height="400">
+</iframe> -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Create layout
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card custom-card" style="width: 8rem;" (click)="selectLayout('1')"
+                                    [ngClass]="{'activelayout':selectedLayout == 1 }">
+                                    <h6 class="text-center mt-1">
+                                        Layout 1
+                                    </h6>
+                                    <div class="card-body">
+                                        <img src="../../../assets/icons/136831.png" class="card-img-top" alt="...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card custom-card" style="width: 8rem;" (click)="selectLayout('2')"
+                                    [ngClass]="{'activelayout':selectedLayout == 2 }">
+                                    <h6 class="text-center mt-1">
+                                        Layout 2
+                                    </h6>
+                                    <div class="card-body">
+                                        <img src="../../../assets/icons/grid.png" class="card-img-top" alt="...">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card custom-card" style="width: 8rem;" (click)="selectLayout('3')"
+                                    [ngClass]="{'activelayout':selectedLayout == 3 }">
+                                    <h6 class="text-center mt-1">
+                                        Layout 3
+                                    </h6>
+                                    <div class="card-body">
+                                        <img src="../../../assets/icons/layout-with-one-column-and-two-rows.png"
+                                            class="card-img-top" alt="...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card custom-card" style="width: 8rem;" (click)="selectLayout('4')"
+                                    [ngClass]="{'activelayout':selectedLayout == 4 }">
+                                    <h6 class="text-center mt-1">
+                                        Layout 4
+                                    </h6>
+                                    <div class="card-body">
+                                        <img src="../../../assets/icons/layout.png" class="card-img-top" alt="...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-sm-4">
+                                    <div class="card card-outline-success mb-3">
+                                        <div class="card-header card-inverse card-success">
+                                            Module 1
+                                        </div>
+                                        <div class="card-block scroll-list">
+                                            <div class="list-group">
+                                                <li class="list-group-item list-group-item-action list-group-item-success"
+                                                    [draggable] *ngFor="let item of modile1" [dragClass]="'active'"
+                                                    [dragData]="item" [dragScope]="item.type"
+                                                    [dragEnabled]="dragEnabled">
+                                                    {{item.name}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="card card-outline-success mb-3">
+                                        <div class="card-header card-inverse card-success">
+                                            Module 2
+                                        </div>
+                                        <div class="card-block scroll-list">
+                                            <div class="list-group">
+                                                <li class="list-group-item list-group-item-action list-group-item-success"
+                                                    [draggable] *ngFor="let item of modile2" [dragClass]="'active'"
+                                                    [dragData]="item" [dragScope]="item.type"
+                                                    [dragEnabled]="dragEnabled">
+                                                    {{item.name}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-4">
+                                    <div class="card card-outline-success mb-3">
+                                        <div class="card-header card-inverse card-success">
+                                            Module 3
+                                        </div>
+                                        <div class="card-block scroll-list">
+                                            <div class="list-group">
+                                                <li class="list-group-item list-group-item-action list-group-item-success"
+                                                    [draggable] *ngFor="let item of modile3" [dragClass]="'active'"
+                                                    [dragData]="item" [dragScope]="item.type"
+                                                    [dragEnabled]="dragEnabled">
+                                                    {{item.name}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <ng-container *ngIf="selectedLayout">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">
+                                    Layout Name
+                                </label>
+                                <input type="text" class="form-control" [(ngModel)]="layoutTitle"
+                                    (ngModelChange)="modelChangeFn($event)" name="layoutTitle"
+                                    id="exampleFormControlInput1" placeholder="Layout name">
+                            </div>
+                            <div class="card card-outline-primary mb-3">
+                                <div class="card-header card-inverse card-primary">
+                                    Drop Module here
+                                </div>
+
+                                <ng-container *ngIf="selectedLayout == 1 || selectedLayout == 2">
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <div class="row m-5">
+                                                <div class="col-md-12 mb-5" *ngFor="let item of droppedModule" droppable
+                                                    [dragOverClass]="'drag-target-border-green'" [dropScope]="'link'"
+                                                    [dragHintClass]="'drag-hint'" (onDrop)="dropModule($event,item)"
+                                                    [ngClass]="{'custom2':selectedLayout == 2,'custom1':selectedLayout == 1,'custom3':selectedLayout == 3,'custom4':selectedLayout == 4}">
+                                                    <div class="card-block scroll-list">
+                                                        <li class="list-group-item" *ngIf="item.name"
+                                                            [ngClass]="{'moduleDropped1':selectedLayout == 1,'moduleDropped2':selectedLayout == 2}">
+                                                            {{item.name}}
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+
+                                <ng-container *ngIf="selectedLayout == 4">
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <div class="row m-3 justify-content-center">
+                                                <div class="col-md-6   seletion4" *ngFor="let item of droppedModule"
+                                                    droppable [dragOverClass]="'drag-target-border-green'"
+                                                    [dropScope]="'link'" [dragHintClass]="'drag-hint'"
+                                                    (onDrop)="dropModule($event,item)">
+                                                    <div class="card-block scroll-list seletion4-scroll-list">
+                                                        <li class="list-group-item" *ngIf="item.name">
+                                                            {{item.name}}
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="selectedLayout == 3">
+                                    <div class="card ">
+                                        <div class="card-body">
+                                            <div class="row m-1 justify-content-center">
+                                                <div class="col-md-4 mb-5 overflow-hidden"
+                                                    *ngFor="let item of droppedModule;let i= index" droppable
+                                                    [dragOverClass]="'drag-target-border-green'" [dropScope]="'link'"
+                                                    [dragHintClass]="'drag-hint'" (onDrop)="dropModule($event,item)"
+                                                    [ngClass]="{'sidebar-layout':i == 0,'sidebar-layout-6':i == 1,'sidebar-layout-2':i == 2}">
+                                                    <div class="card-block scroll-list">
+                                                        <li class="list-group-item" *ngIf="item.name">
+                                                            {{item.name}}dsdsd
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="!selectedLayout">
+                            <div class="alert alert-warning" role="alert">
+                                Please select a layout.
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <hr>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="lunchLayout()"
+                    [disabled]="buttonDisabled">
+                    Luanch Layout
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ declare var $: any;
 export class DashboardComponent implements OnInit {
 
 
+  // Module 1
   modile1: any = [
     { name: 'Wikipedia', type: 'link', url: 'https://en.wikipedia.org' },
     { name: 'Responsive', type: 'link', url: 'http://responsivewebinc.com/templates/responsivewebinc' },
@@ -17,6 +18,7 @@ export class DashboardComponent implements OnInit {
     { name: 'Instagram', type: 'link', url: 'https://www.instagram.com/' }
   ];
 
+  // Module 2
   modile2: any = [
     { name: 'Wikipedia', type: 'link', url: 'https://en.wikipedia.org' },
     { name: 'responsive', type: 'link', url: 'http://responsivewebinc.com/templates/responsivewebinc' },
@@ -24,6 +26,7 @@ export class DashboardComponent implements OnInit {
     { name: 'Instagram', type: 'link', url: 'https://www.instagram.com/' }
   ];
 
+  // Module 3
   modile3: any = [
     { name: 'Wikipedia', type: 'link', url: 'https://en.wikipedia.org' },
     { name: 'responsive', type: 'link', url: 'http://responsivewebinc.com/templates/responsivewebinc' },
@@ -43,6 +46,7 @@ export class DashboardComponent implements OnInit {
     { name: 'Orange', type: 'fruit' },
   ];
 
+  // Variables
   droppedFruits: any = [];
   droppedModule: any = [];
   droppedItems: any = [];
@@ -64,22 +68,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDataFromLocalStorage = this.getLocalStorageData();
-    console.log("this.getDataFromLocalStorage", this.getDataFromLocalStorage);
-
     if (this.getDataFromLocalStorage.length > 0) {
-
       this.clickedTabId = this.getDataFromLocalStorage[0].id;
-
       setTimeout(() => {
         this.getDataFromLocalStorage.filter((res: any) => {
-
           res.layout.filter((res: any) => {
             if (res.url.changingThisBreaksApplicationSecurity == undefined) {
               const url = res.url;
               res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
             }
           });
-
         });
       }, 500);
     }
@@ -150,7 +148,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
+  /**Droped module */
   dropModule(e: any, data: any) {
     console.log(e, data)
     if (this.selectedLayout == 1) {

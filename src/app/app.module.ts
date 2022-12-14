@@ -7,13 +7,15 @@ import { NavComponent } from './layout/nav/nav.component';
 import { DashboardComponent } from './layout/dashboard/dashboard.component';
 import { NgDragDropModule } from 'ng-drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SafePipe } from './helpers/safe.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    DashboardComponent
+    DashboardComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,

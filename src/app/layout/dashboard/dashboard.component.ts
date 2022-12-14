@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
       setTimeout(() => {
         this.getDataFromLocalStorage.filter((res: any) => {
           res.layout.filter((res: any) => {
-            if (res.url.changingThisBreaksApplicationSecurity == undefined) {
+            if (res.url.changingThisBreaksApplicationSecurity && res.url.changingThisBreaksApplicationSecurity == undefined) {
               const url = res.url;
               res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
             }
@@ -150,7 +150,6 @@ export class DashboardComponent implements OnInit {
 
   /**Droped module */
   dropModule(e: any, data: any) {
-    console.log(e, data)
     if (this.selectedLayout == 1) {
       this.droppedModule.filter((dt: any) => {
         if (dt.id == data.id) {
@@ -205,10 +204,6 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    console.log(e)
-
-    console.log(data)
-
     // this.droppedModule.push(e.dragData);
     this.removeItem(e.dragData, this.vegetables);
   }
@@ -245,8 +240,6 @@ export class DashboardComponent implements OnInit {
 
     if (this.selectedLayout == 1) {
 
-      console.log(this.getDataFromLocalStorage.length)
-
       var num: number = this.getDataFromLocalStorage.length
 
       makeObject.tabView = 'View' + (num + 1)
@@ -269,8 +262,6 @@ export class DashboardComponent implements OnInit {
       }
 
       this.getDataFromLocalStorage = this.getLocalStorageData();
-
-      console.log("this.getDataFromLocalStorage", this.getDataFromLocalStorage);
 
 
     } else if (this.selectedLayout == 2) {
@@ -346,7 +337,7 @@ export class DashboardComponent implements OnInit {
       this.getDataFromLocalStorage.filter((res: any) => {
 
         res.layout.filter((res: any) => {
-          if (res.url.changingThisBreaksApplicationSecurity == undefined) {
+          if (res.url.changingThisBreaksApplicationSecurity && res.url.changingThisBreaksApplicationSecurity == undefined) {
             const url = res.url;
             res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
           }
@@ -357,7 +348,6 @@ export class DashboardComponent implements OnInit {
 
     this.clickedTabId = this.getDataFromLocalStorage[0].id;
 
-    console.log("this.clickedTabId", this.clickedTabId);
   }
 
   /** Get local storage data */
@@ -387,12 +377,10 @@ export class DashboardComponent implements OnInit {
 
   /** View clicked */
   viewClicked(view: any) {
-    console.log(view);
     this.clickedTabId = view.id;
     setTimeout(() => {
       view.layout.filter((res: any) => {
-        console.log(res.url.changingThisBreaksApplicationSecurity);
-        if (res.url.changingThisBreaksApplicationSecurity == undefined) {
+        if (res.url.changingThisBreaksApplicationSecurity && res.url.changingThisBreaksApplicationSecurity == undefined) {
           const url = res.url;
           res.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         }
@@ -425,7 +413,6 @@ export class DashboardComponent implements OnInit {
   /** Search view */
   searchView() {
     this.getDataFromLocalStorage = this.getDataFromLocalStorage.filter((fl: any, index: number) => {
-      console.log(fl)
       if (fl.name.toUpperCase() == this.searchKeyword.toUpperCase()) {
         return fl;
       }

@@ -81,8 +81,8 @@
                                         <div class="card-body overflow-hidden"
                                             [ngClass]="{'bodylayout1':view.layoutName == 'Layout 1','bodylayout2':view.layoutName == 'Layout 2'}">
                                             <h5 class="card-title">
-                                                {{content.name}}
-                                                <iframe id=" frame" [src]="content.url" width="100%" height="600">
+                                                {{content.name}}{{content.url}}
+                                                <iframe id=" frame" [src]="content.url | safe" width="100%" height="600">
                                                 </iframe>
                                             </h5>
                                         </div>
@@ -96,7 +96,7 @@
                                         <div class="card-body overflow-hidden">
                                             <h5 class="card-title">
                                                 {{content.name}}
-                                                <iframe id=" frame" [src]="content.url" width="100%" height="400">
+                                                <iframe id=" frame" [src]="content.url | safe" width="100%" height="400">
                                                 </iframe>
                                             </h5>
                                         </div>
@@ -112,7 +112,7 @@
                                             [ngClass]="{'dashboardLayout0':i == 0,'dashboardLayout1':i == 1,'dashboardLayout2':i == 2}">
                                             <h5 class="card-title">
                                                 {{content.name}}
-                                                <iframe id=" frame" [src]="content.url" width="100%" height="400">
+                                                <iframe id=" frame" [src]="content.url | safe" width="100%" height="400">
                                                 </iframe>
                                             </h5>
                                         </div>
